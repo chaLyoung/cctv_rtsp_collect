@@ -14,6 +14,8 @@ from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+#TODO
+# 서버로 띄울거면 FASTAPI 고려 (Docker 파일 바꾸어주어야 함
 # app = FastAPI()
 # origins = [
 #     "*"
@@ -25,15 +27,15 @@ from fastapi.middleware.cors import CORSMiddleware
 #     allow_methods=["*"],
 #     allow_headers=["*"],
 # )
-
-LOCAL_PORT = 9999
+# LOCAL_PORT = 9999
 
 # @app.api_route("/startStream", methods=['GET', 'POST'])
 # def mainTest():
 #     print('init')
 
 
-def startStream():
+def startStream():  # 비동기로 함수 변경 요망
+    # cap = cv2.VideoCapture("rtsp://admin:fron9116!!!@1.223.42.198:558/LiveChannel/1/media.smp") # HANHWA TECHWIN
     cap = cv2.VideoCapture("rtsp://admin:aistudio1@@192.168.1.71:554/ISAPI/streaming/channels/101") # HIKVISION
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     30 if fps >= 30 else fps
@@ -47,15 +49,17 @@ def startStream():
     avi_name = os.path.join(os.getcwd(), now.strftime('%Y%m%d%H%M%S') + '.avi') # 저장할 위치 지정
     fourcc = cv2.VideoWriter_fourcc(*'DIVX')
     output = cv2.VideoWriter(avi_name, fourcc, fps, (width, height))
-
+    
     while True:
         ret, frame = cap.read()
         fps = cap.get(cv2.CAP_PROP_FPS)
-        cv2.imshow('video', frame)
+        # cv2.imshow('video', frame)
         output.write(frame)
-        if cv2.waitKey(1) == 27:
+        if cv2.waitKey(1) == 27:    # 제거해야 함
             break
-
+        
+        # 특정 시간에 loop 종료 메서드 작성
+        
     cap.release()
     output.release()
     cv2.destroyAllWindows()
@@ -73,7 +77,7 @@ if __name__ == '__main__':
 #     service_start()
 
 
-# fastapi - uvicorn
+# fastapi - uvicorn 로컬에서 실행할때만 필요
 # def service_start():
 #     global LOCAL_PORT
 #
@@ -81,5 +85,3 @@ if __name__ == '__main__':
 #     multiprocessing.freeze_support()
 #
 #     uvicorn.run(app, host="0.0.0.0", port=LOCAL_PORT)
-#
-#

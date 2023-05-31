@@ -68,6 +68,8 @@ def startStream():  # 비동기로 함수 변경 요망
     mp4_name = name + ".mp4"
     try:
         os.system(f"ffmpeg -i {avi_name} {mp4_name}")
+        # TODO 정상적으로 완료 시 avi 파일 제거 할 지 판단 필요
+
     except Exception as e:
         print("while convertion mp4 exception: " + str(e))
 

@@ -1,0 +1,6 @@
+fastapi
+uvicorn==0.20.0
+requests
+pydantic
+charset-normalizer==2.1.0
+opencv-python
